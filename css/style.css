@@ -1,0 +1,98 @@
+body{
+    position: relative;
+    background: url(../img/bg.jpg);
+    margin: 10px 20px 10px 20px;
+    width: 1300px;
+    align-items: center;
+    
+}
+header{
+    margin: 0px;
+}
+header section img{
+    
+    margin: 25px;
+    float: left;
+    width: 75px;
+    margin: 0PX;
+}
+header section{
+    margin:0px 0px 0px 5px;
+    display: inline-flex;
+    align-items: center;
+}
+header section h1{
+    text-align: center;
+    margin-left: 50px;
+    width:100%;
+    font-size: 50px;
+}
+header section hr{
+    clear: both;
+    width: 99%;
+}
+main{
+    display: inline-flex;
+   
+    align-items:stretch;
+}
+#mainSec{
+ clear: both;   
+width: 78% ;
+margin-bottom: 10px;
+display: inline-block;
+}
+#imgs{
+    border: solid 3px black;
+    border-radius: 5px;
+    display: inline-flex;
+    padding: 15px;
+    margin: 2px;
+    width: 95%;
+}
+#imgs div{
+    border: 2px solid blue;
+    margin: 5px;
+    text-align: center;
+    align-items: center;
+    height: 330px;
+}
+
+div img{
+    width: 275px;
+    height:260px;
+}
+div p{
+    width: 75%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(245, 186, 186);
+    border-radius: 10px;
+    font-size: 130%;
+    font-weight: bold;
+    height: 35px;
+    padding-top: 10px;
+    color: rgb(77, 2, 2);
+    text-shadow: 2px 2px 10px rgb(0, 0, 0);
+}
+aside{
+    margin: 10px 20px 10px 10px;
+    clear: both;
+    float: left;
+    left: 0px;
+width:30%;
+border: 1px solid blue;
+}
+footer{
+    clear: both;
+    border: 1px solid blue;
+}
+#btnViewResults{
+    display: none;
+    font-size: 35px;
+    vertical-align: middle;
+    margin: 10px auto auto auto;
+    width: 80%;
+    text-align: center;
+}
