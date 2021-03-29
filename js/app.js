@@ -11,8 +11,9 @@ let lblMid=document.getElementById('pM');
 let imgRight=document.getElementById('imgR');
 let lblRight=document.getElementById('pR');
 let imgCont=document.getElementById('imgs');
-
-
+let prodLike=[];
+let prodShow=[];
+let prevShow=[];
 
 /********Func. Randon Number************/
 function gitRandNum(maxNum,minNum){
@@ -31,7 +32,7 @@ const Product = function(productName,imgPath,id){
   this.id=id,
   this.productName=productName,
   this.imgPath=imgPath,
-  this.likes=0,
+  this.like=0,
   this.show=0;
   Product.all.push(this);
 };
@@ -46,20 +47,20 @@ function defineProd(){
 }
 defineProd();
 
-/************************************/
+/*********************************prevShow***/
 /***********pick 3 Product randomly***********/
 function pickProduct(){
+  // debugger;
   let pickedProdId=[];
-  let randomProdId=(gitRandNum(imgsPaths.length-1,0));
+  let randomProdId;
   for(let i=0;i<3;i++){
-    if(pickedProdId.includes(randomProdId)){
+    while (pickedProdId.length<3){
       randomProdId=(gitRandNum(imgsPaths.length-1,0));
-      i--;}
-    else{
-      pickedProdId.push(randomProdId);
-
-      randomProdId=(gitRandNum(imgsPaths.length-1,0));
-    }}
+      if(!(prevShow.includes(randomProdId))&&!(pickedProdId.includes(randomProdId))){
+        pickedProdId.push(randomProdId);
+      }
+    }
+  }
 
   return pickedProdId;
 }
@@ -78,6 +79,7 @@ function render (){
   lblRight.textContent=Product.all[randProdId[2]].productName;
   Product.all[randProdId[2]].show++;
   timeCount--;
+  prevShow=randProdId;
 // console.log(Product.all[randProdId[0]].productName+'///'+Product.all[randProdId[0]].imgPath);
 }
 render ();
@@ -89,11 +91,11 @@ function likeProd (event){
     // debugger;
     if(timeCount>=0){
       if(event.target.id==='imgL'){
-        Product.all[randProdId[0]].likes++;
+        Product.all[randProdId[0]].like++;
       }else if(event.target.id==='imgM'){
-        Product.all[randProdId[1]].likes++;
+        Product.all[randProdId[1]].like++;
       }else if(event.target.id==='imgR'){
-        Product.all[randProdId[2]].likes++;
+        Product.all[randProdId[2]].like++;
       }
       if(timeCount>0){
         newRender ();
@@ -124,8 +126,11 @@ function insertResult(event){
   for(let i=0;i<Product.all.length;i++){
     let liEl = document.createElement('li');
     ulEl.appendChild(liEl);
-    liEl.textContent=Product.all[i].productName+' had '+Product.all[i].likes +' votes, and was seen '+Product.all[i].show+' times.';
+    liEl.textContent=Product.all[i].productName+' had '+Product.all[i].like +' votes, and was seen '+Product.all[i].show+' times.';
+    prodLike.push(Product.all[i].like);
+    prodShow.push(Product.all[i].show);
   }
+  chartProd();
 }
 function removeLi (){
   let ulElRemove=document.getElementById('ulResult');
@@ -133,3 +138,32 @@ function removeLi (){
 }
 
 
+function chartProd(){
+  let charCont= document.getElementById("charts");
+  let ctx = document.getElementById('myChart').getContext('2d');
+  // eslint-disable-next-line no-undef
+  let chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: ProductNames,
+      datasets: [{
+        label: 'Like Product Report',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: prodLike
+      },{
+        label: 'Show Product Report',
+        backgroundColor: 'rgb(99, 99, 132)',
+        borderColor: 'rgb(10, 99, 132)',
+        data: prodShow
+      }]
+    },
+
+    // Configuration options go here
+    options: {}
+  });
+  charCont.style.display='flex';
+}
