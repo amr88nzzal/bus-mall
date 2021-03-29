@@ -43,22 +43,24 @@ margin-bottom: 10px;
 display: inline-block;
 }
 #imgs{
-    border: solid 3px black;
-    border-radius: 5px;
+    border: solid 2px rgb(23, 2, 141);
+    border-radius: 10px;
     display: inline-flex;
-    padding: 15px;
-    margin: 2px;
+    padding: 10px;
+    margin: 10px;
     width: 95%;
 }
 #imgs div{
     border: 2px solid blue;
-    margin: 5px;
+    margin: 10px;
     text-align: center;
     align-items: center;
     height: 330px;
+    border-radius: 10px;
 }
 
 div img{
+    border-radius: 10px;
     width: 275px;
     height:260px;
 }
@@ -82,11 +84,15 @@ aside{
     float: left;
     left: 0px;
 width:30%;
-border: 1px solid blue;
+border: 2px solid blue;
+border-radius: 10px;
 }
 footer{
     clear: both;
-    border: 1px solid blue;
+    border: 2px solid blue;
+    border-radius: 10px;
+    text-align: center;
+
 }
 #btnViewResults{
     display: none;
@@ -95,4 +101,11 @@ footer{
     margin: 10px auto auto auto;
     width: 80%;
     text-align: center;
+    color:rgb(167, 10, 10);
+}
+ul li {
+    margin-left: 10px;
+}
+.imgStyle:hover{
+    opacity: .45;
 }
