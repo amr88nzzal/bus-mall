@@ -8,6 +8,7 @@ body{
 }
 header{
     margin: 0px;
+    
 }
 header section img{
     
@@ -22,16 +23,20 @@ header section{
     align-items: center;
 }
 header section h1{
+    font-family:cursive;
+    color: rgb(139, 206, 7);
+    text-shadow: 2px 3px 2px black;
     text-align: center;
     margin-left: 50px;
     width:100%;
     font-size: 50px;
+    font-weight: bold;
 }
 header section hr{
     clear: both;
     width: 99%;
 }
-main{
+#main{
     display: inline-flex;
    
     align-items:stretch;
@@ -108,4 +113,13 @@ ul li {
 }
 .imgStyle:hover{
     opacity: .45;
+}
+#charts{
+    display: none;
+    text-align: center;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.699);
+    width: 70%;
+    border-radius: 10px;
+    margin-top: 25px;
 }
