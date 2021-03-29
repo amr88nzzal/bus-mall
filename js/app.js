@@ -1,8 +1,8 @@
 'use strict';
-let timeCount= 2;
+let timeCount= 25;
 let imgsPaths=['bag.jpg','banana.jpg','bathroom.jpg','boots.jpg','breakfast.jpg','bubblegum.jpg','chair.jpg','cthulhu.jpg','dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg','shark.jpg','sweep.png','tauntaun.jpg','unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
 // console.log(imgsPaths);
-let productsNames=[];
+let ProductNames=[];
 
 let imgLeft=document.getElementById('imgL');
 let lblLeft=document.getElementById('pL');
@@ -20,35 +20,35 @@ function gitRandNum(maxNum,minNum){
   // console.log(randNum);
   return randNum;}
 /**********************************/
-/***********Git products Names***********/
+/***********Git Product Names***********/
 for (let i=0;i<(imgsPaths.length);i++){
-  productsNames.push(imgsPaths[i].split('.')[0]);
+  ProductNames.push(imgsPaths[i].split('.')[0]);
 }
 /**********************************/
 
-/***********Products Constructor***********/
-const Products = function(productName,imgPath,id){
+/***********Product Constructor***********/
+const Product = function(productName,imgPath,id){
   this.id=id,
   this.productName=productName,
   this.imgPath=imgPath,
   this.likes=0,
   this.show=0;
-  Products.all.push(this);
+  Product.all.push(this);
 };
-Products.all=[];
+Product.all=[];
 /***************************************/
-/***********dif products***********/
+/***********dif Product***********/
 function defineProd(){
-  for (let i=0;i<productsNames.length;i++){
-    new Products(productsNames[i],`./assets/${imgsPaths[i]}`,i);
-  // console.log(Products.all[i]);
+  for (let i=0;i<ProductNames.length;i++){
+    new Product(ProductNames[i],`./assets/${imgsPaths[i]}`,i);
+  // console.log(Product.all[i]);
   }
 }
 defineProd();
 
 /************************************/
-/***********pick 3 products randomly***********/
-function pickProducts(){
+/***********pick 3 Product randomly***********/
+function pickProduct(){
   let pickedProdId=[];
   let randomProdId=(gitRandNum(imgsPaths.length-1,0));
   for(let i=0;i<3;i++){
@@ -65,54 +65,66 @@ function pickProducts(){
 }
 /************************************/
 let randProdId=[];
-// console.log(Products.all);
+// console.log(Product.all);
 function render (){
-  randProdId=pickProducts();
-  imgLeft.src=Products.all[randProdId[0]].imgPath;
-  lblLeft.textContent=Products.all[randProdId[0]].productName;
-  Products.all[randProdId[0]].show++;
-  imgMid.src=Products.all[randProdId[1]].imgPath;
-  lblMid.textContent=Products.all[randProdId[1]].productName;
-  Products.all[randProdId[1]].show++;
-  imgRight.src=Products.all[randProdId[2]].imgPath;
-  lblRight.textContent=Products.all[randProdId[2]].productName;
-  Products.all[randProdId[2]].show++;
+  randProdId=pickProduct();
+  imgLeft.src=Product.all[randProdId[0]].imgPath;
+  lblLeft.textContent=Product.all[randProdId[0]].productName;
+  Product.all[randProdId[0]].show++;
+  imgMid.src=Product.all[randProdId[1]].imgPath;
+  lblMid.textContent=Product.all[randProdId[1]].productName;
+  Product.all[randProdId[1]].show++;
+  imgRight.src=Product.all[randProdId[2]].imgPath;
+  lblRight.textContent=Product.all[randProdId[2]].productName;
+  Product.all[randProdId[2]].show++;
   timeCount--;
-  if(timeCount===-1){
-    btnViewResults.style.display='flex';
-  }
-// console.log(Products.all[randProdId[0]].productName+'///'+Products.all[randProdId[0]].imgPath);
+// console.log(Product.all[randProdId[0]].productName+'///'+Product.all[randProdId[0]].imgPath);
 }
 render ();
 /************************************/
 /***********event***********/
 imgCont.addEventListener('click',likeProd);
 function likeProd (event){
-  if(event.target.id==='imgL'){
-    Products.all[randProdId[0]].likes++;
-    x ();
-  }else if(event.target.id==='imgM'){
-    Products.all[randProdId[1]].likes++;
-    x ();
-  }else if(event.target.id==='imgR'){
-    Products.all[randProdId[2]].likes++;
-    x ();
+  if(event.target.id!=='imgs'&& event.target.id!=='pL'&& event.target.id!=='pM'&& event.target.id!=='pR' ){
+    // debugger;
+    if(timeCount>=0){
+      if(event.target.id==='imgL'){
+        Product.all[randProdId[0]].likes++;
+      }else if(event.target.id==='imgM'){
+        Product.all[randProdId[1]].likes++;
+      }else if(event.target.id==='imgR'){
+        Product.all[randProdId[2]].likes++;
+      }
+      if(timeCount>0){
+        newRender ();
+      }
+      else{
+        btnViewResults.style.display='flex';
+        imgCont.removeEventListener('click',likeProd);
+      }
+      console.log(timeCount);
+    }
+    else {
+      console.log(5555);
+      imgCont.removeEventListener('click',likeProd);
+    }
   }
-  function x (){
-    console.table(Products.all);
-    pickProducts();
-    render();}
 }
+function newRender (){
+  console.table(Product.all);
+  pickProduct();
+  render();}
+
 let btnViewResults =document.getElementById('btnViewResults');
 btnViewResults.addEventListener('click',insertResult);
 function insertResult(event){
   removeLi ();
   event.preventDefault();
   let ulEl=document.getElementById('ulResult');
-  for(let i=0;i<Products.all.length;i++){
+  for(let i=0;i<Product.all.length;i++){
     let liEl = document.createElement('li');
     ulEl.appendChild(liEl);
-    liEl.textContent=Products.all[i].productName+' had '+Products.all[i].likes +'votes, and was seen '+Products.all[i].show+' times.';
+    liEl.textContent=Product.all[i].productName+' had '+Product.all[i].likes +' votes, and was seen '+Product.all[i].show+' times.';
   }
 }
 function removeLi (){
