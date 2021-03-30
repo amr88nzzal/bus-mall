@@ -6,6 +6,15 @@ body{
     align-items: center;
     
 }
+#prevRepo{
+    display:none;
+    width: 150px;
+    height: 50px;
+    float: right;
+    text-align: center;
+    margin-top: 35px;
+    
+}
 header{
     margin: 0px;
     

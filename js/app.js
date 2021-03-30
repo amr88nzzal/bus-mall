@@ -11,10 +11,12 @@ let lblMid=document.getElementById('pM');
 let imgRight=document.getElementById('imgR');
 let lblRight=document.getElementById('pR');
 let imgCont=document.getElementById('imgs');
+let prevRepo=document.getElementById('prevRepo');
 let prodLike=[];
 let prodShow=[];
 let prevShow=[];
-
+let totView=0;
+let totLike=0;
 /********Func. Randon Number************/
 function gitRandNum(maxNum,minNum){
   let randNum= Math.floor(Math.random()*(Number(maxNum)-(Number(minNum))+1))+(Number(minNum));
@@ -71,24 +73,27 @@ function render (){
   randProdId=pickProduct();
   imgLeft.src=Product.all[randProdId[0]].imgPath;
   lblLeft.textContent=Product.all[randProdId[0]].productName;
-  Product.all[randProdId[0]].show++;
   imgMid.src=Product.all[randProdId[1]].imgPath;
   lblMid.textContent=Product.all[randProdId[1]].productName;
-  Product.all[randProdId[1]].show++;
   imgRight.src=Product.all[randProdId[2]].imgPath;
   lblRight.textContent=Product.all[randProdId[2]].productName;
-  Product.all[randProdId[2]].show++;
+  //debugger;
   timeCount--;
-  prevShow=randProdId;
-// console.log(Product.all[randProdId[0]].productName+'///'+Product.all[randProdId[0]].imgPath);
+  prevShow=randProdId;}
+
+function showPlus(imgL,imgM,imgR){
+  Product.all[imgL].show++;
+  Product.all[imgM].show++;
+  Product.all[imgR].show++;
 }
-render ();
+
+// render ();
 /************************************/
 /***********event***********/
 imgCont.addEventListener('click',likeProd);
 function likeProd (event){
   if(event.target.id!=='imgs'&& event.target.id!=='pL'&& event.target.id!=='pM'&& event.target.id!=='pR' ){
-    // debugger;
+    //  debugger;
     if(timeCount>=0){
       if(event.target.id==='imgL'){
         Product.all[randProdId[0]].like++;
@@ -96,7 +101,9 @@ function likeProd (event){
         Product.all[randProdId[1]].like++;
       }else if(event.target.id==='imgR'){
         Product.all[randProdId[2]].like++;
+       
       }
+      showPlus(randProdId[0],randProdId[1],randProdId[2]);
       if(timeCount>0){
         newRender ();
       }
@@ -104,13 +111,12 @@ function likeProd (event){
         btnViewResults.style.display='flex';
         imgCont.removeEventListener('click',likeProd);
       }
-      console.log(timeCount);
     }
     else {
-      console.log(5555);
       imgCont.removeEventListener('click',likeProd);
     }
   }
+  console.log(totView,totLike);
 }
 function newRender (){
   console.table(Product.all);
@@ -120,8 +126,11 @@ function newRender (){
 let btnViewResults =document.getElementById('btnViewResults');
 btnViewResults.addEventListener('click',insertResult);
 function insertResult(event){
-  removeLi ();
   event.preventDefault();
+  insertResultFunc();
+}
+function insertResultFunc(){
+  removeLi ();
   let ulEl=document.getElementById('ulResult');
   for(let i=0;i<Product.all.length;i++){
     let liEl = document.createElement('li');
@@ -129,8 +138,12 @@ function insertResult(event){
     liEl.textContent=Product.all[i].productName+' had '+Product.all[i].like +' votes, and was seen '+Product.all[i].show+' times.';
     prodLike.push(Product.all[i].like);
     prodShow.push(Product.all[i].show);
+    totView=totView+Product.all[i].show;
+    totLike=totLike+Product.all[i].like;
   }
   chartProd();
+  storeProductsResult();
+  console.log(totView,totLike);
 }
 function removeLi (){
   let ulElRemove=document.getElementById('ulResult');
@@ -139,14 +152,11 @@ function removeLi (){
 
 
 function chartProd(){
-  let charCont= document.getElementById("charts");
+  let charCont= document.getElementById('charts');
   let ctx = document.getElementById('myChart').getContext('2d');
   // eslint-disable-next-line no-undef
   let chart = new Chart(ctx, {
-    // The type of chart we want to create
     type: 'bar',
-
-    // The data for our dataset
     data: {
       labels: ProductNames,
       datasets: [{
@@ -161,9 +171,32 @@ function chartProd(){
         data: prodShow
       }]
     },
-
-    // Configuration options go here
     options: {}
   });
   charCont.style.display='flex';
 }
+
+
+function storeProductsResult(){
+  let storeLS=JSON.stringify(Product.all);
+  localStorage.setItem('like Result',storeLS);
+}
+
+function restoreProductsResult(){
+  let restoreLS=JSON.parse(localStorage.getItem('like Result'));
+  if(restoreLS!== null){
+    Product.all=restoreLS;
+    prevRepo.style.display='flex';
+    // timeCount++;
+  }
+  render();
+}
+
+prevRepo.addEventListener('click',showPrevRepo);
+function showPrevRepo(event){
+  event.preventDefault();
+  insertResultFunc();
+  // timeCount=-1;
+}
+
+restoreProductsResult();
